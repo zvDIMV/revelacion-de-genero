@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Revelación de Género - ¿Niño o Niña?</title>
+
+  <!-- ===================================================================== -->
+  <!-- CONFIGURACIÓN PRINCIPAL: EDITA AQUÍ TU MÚSICA, IMÁGENES PNG Y DATOS   -->
+  <!-- Guarda los archivos en la MISMA CARPETA que este archivo HTML.        -->
+  <!-- ===================================================================== -->
+  <script>
+    const CONFIG = {
+      // 1. Música de fondo en loop (DEBE incluir .mp3 al final y estar en la misma carpeta)
+      // Recomendación: renombra tu archivo a musica.mp3 (sin espacios ni acentos)
+      AUDIO_MP3_URL: './Mi Corazon Encantado Piano.mp3 ',
+
+      // 2. Imágenes PNG transparentes (DEBEN incluir .png al final y estar en la misma carpeta)
+      SHENLONG_PNG: './Shen_Long_Artwork.png',
+      OSITO_IZQ_PNG: './Pan baby.png',
+      OSITO_DER_PNG: './Goku bb.png',
+      ESFERAS_PNG: './Dragon Ball.png',
+
+      // 3. Nombres de los padres (si lo dejas vacío '', se oculta)
+      NOMBRES_PADRES: 'Jenny y Marco',
+
+      // 4. Fecha y hora del evento (FECHA_ISO controla la cuenta regresiva)
+      FECHA_ISO: '2026-11-28T16:00:00',
+      FECHA_TEXTO: '28 DE NOVIEMBRE DE 2026',
+      DIA_NUM: '28',
+      MES_ANIO: '',
+      DIA_SEMANA: 'SÁBADO',
+      HORA_TEXTO: 'NOVIEMBRE',
+
+      // 5. Lugar y enlace de Google Maps para el botón "Ver Ubicación"
+      LUGAR_TEXTO: 'POR DETERMINAR',
+      URL_UBICACION: 'https://maps.google.com/?q=Ciudad+de+Mexico',
+
+      // 6. WhatsApp (código de país + número sin espacios ni signo +)
+      WHATSAPP_NUMERO: '525670109249',
+      WHATSAPP_MENSAJE: '¡Hola! Confirmo mi asistencia a la Revelación de Género el 28 de noviembre de 2026.',
+
+      // 7. Encabezados superiores
+      TITULO_PRINCIPAL: 'Revelación de Genero',
+      SUBTITULO: ''
+    };
+  </script>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fuentes de Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Great+Vibes&family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --db-blue-dark: #06143b;
+      --db-blue-mid: #0e3282;
+      --db-blue-light: #1e60d5;
+      --db-orange: #ff6b00;
+      --db-orange-bright: #ff9e00;
+      --db-gold: #ffd000;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      font-family: 'Nunito', sans-serif;
+      background: radial-gradient(circle at 50% 12%, #1d57c9 0%, #0d2b75 45%, #06143b 100%);
+      color: #4a3728;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Bloqueo inicial de scroll mientras está la portada */
+    body.overlay-active {
+      overflow-y: hidden;
+      height: 100vh;
+    }
+
+    .font-script {
+      font-family: 'Great Vibes', cursive;
+    }
+
+    .font-serif-elegant {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Tipografía fluida responsiva */
+    .title-main {
+      font-size: clamp(1.5rem, 5vw, 2.2rem);
+      line-height: 1.15;
+    }
+
+    .title-script {
+      font-size: clamp(2.15rem, 7.2vw, 3.15rem);
+      line-height: 1.05;
+    }
+
+    /* Marco exterior azul estilo Dragon Ball */
+    .db-outer-frame {
+      position: relative;
+      width: 94%;
+      max-width: 560px;
+      margin: 0 auto;
+      background: linear-gradient(160deg, rgba(25, 86, 209, 0.7) 0%, rgba(8, 28, 82, 0.92) 100%);
+      border: 3px solid rgba(96, 165, 250, 0.75);
+      border-radius: 36px;
+      box-shadow:
+        0 0 38px rgba(37, 99, 235, 0.65),
+        inset 0 0 24px rgba(147, 197, 253, 0.25);
+    }
+
+    /* Tarjeta principal con arco superior naranja */
+    .arch-card {
+      position: relative;
+      z-index: 10;
+      border-top-left-radius: clamp(140px, 42vw, 255px);
+      border-top-right-radius: clamp(140px, 42vw, 255px);
+      border-bottom-left-radius: 26px;
+      border-bottom-right-radius: 26px;
+      background: linear-gradient(180deg, #ffffff 0%, #fffaf5 65%, #fff4e8 100%);
+      border: 7px solid var(--db-orange);
+      box-shadow:
+        0 0 0 3px var(--db-gold),
+        0 0 30px rgba(255, 107, 0, 0.75),
+        0 20px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    /* Borde interno punteado sutil */
+    .arch-card::before {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border-top-left-radius: clamp(132px, 40vw, 245px);
+      border-top-right-radius: clamp(132px, 40vw, 245px);
+      border-bottom-left-radius: 18px;
+      border-bottom-right-radius: 18px;
+      border: 1.5px dashed rgba(255, 145, 0, 0.35);
+      pointer-events: none;
+    }
+
+    /* ========================================================= */
+    /* ANIMACIONES (SE CONSERVAN AL USAR IMÁGENES PNG)           */
+    /* ========================================================= */
+    @keyframes floatShenlong {
+      0%, 100% { transform: translate(-50%, 0px) scale(1); }
+      50% { transform: translate(-50%, -8px) scale(1.025); }
+    }
+
+    @keyframes shenlongAura {
+      0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(255, 208, 0, 0.65)) drop-shadow(0 0 22px rgba(255, 123, 0, 0.45));
+      }
+      50% {
+        filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.95)) drop-shadow(0 0 32px rgba(34, 197, 94, 0.55));
+      }
+    }
+
+    @keyframes floatBearLeft {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-7px) scale(1.03); }
+    }
+
+    @keyframes floatBearRight {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(7px) scale(1.03); }
+    }
+
+    /* Resplandor anaranjado pulsante para Esferas del Dragón (PNG o SVG) */
+    @keyframes orangeGlowPulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 8px rgba(255, 115, 0, 0.85)) drop-shadow(0 0 18px rgba(255, 183, 0, 0.65));
+      }
+      50% {
+        transform: scale(1.035);
+        filter: drop-shadow(0 0 16px rgba(255, 107, 0, 1)) drop-shadow(0 0 30px rgba(255, 165, 0, 0.9));
+      }
+    }
+
+    @keyframes haloPulse {
+      0%, 100% { opacity: 0.45; transform: scale(0.95); }
+      50% { opacity: 0.85; transform: scale(1.06); }
+    }
+
+    .animate-shenlong {
+      animation: floatShenlong 4.8s ease-in-out infinite, shenlongAura 3.4s ease-in-out infinite;
+    }
+
+    .animate-bear-left {
+      animation: floatBearLeft 4.2s ease-in-out infinite;
+    }
+
+    .animate-bear-right {
+      animation: floatBearRight 4.5s ease-in-out infinite;
+    }
+
+    .dragon-balls-glow {
+      animation: orangeGlowPulse 2.8s ease-in-out infinite;
+    }
+
+    .dragon-balls-halo {
+      background: radial-gradient(ellipse at center, rgba(255, 136, 0, 0.55) 0%, rgba(255, 187, 0, 0.24) 48%, rgba(255, 107, 0, 0) 75%);
+      animation: haloPulse 2.8s ease-in-out infinite;
+    }
+
+    /* Partículas de Ki en el fondo (nunca bloquean clics) */
+    #kiContainer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .ki-particle {
+      position: absolute;
+      border-radius: 9999px;
+      pointer-events: none;
+      opacity: 0;
+      animation: riseKi linear infinite;
+    }
+
+    @keyframes riseKi {
+      0% { transform: translateY(105vh) scale(0.5); opacity: 0; }
+      15% { opacity: 0.78; }
+      85% { opacity: 0.55; }
+      100% { transform: translateY(-10vh) scale(1.15); opacity: 0; }
+    }
+
+    /* Pulso dorado en portada */
+    @keyframes pulseGold {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 208, 0, 0.75); }
+      70% { box-shadow: 0 0 0 18px rgba(255, 208, 0, 0); }
+    }
+
+    .btn-pulse-gold {
+      animation: pulseGold 2s infinite;
+    }
+
+    /* Ondas musicales animadas */
+    @keyframes musicBarBounce {
+      0%, 100% { transform: scaleY(0.32); }
+      50% { transform: scaleY(1); }
+    }
+
+    .music-bar {
+      transform-origin: bottom;
+      animation: musicBarBounce 0.85s ease-in-out infinite;
+    }
+
+    .music-bar.paused {
+      animation-play-state: paused;
+      transform: scaleY(0.32);
+    }
+
+    /* Pantalla de bienvenida (Splash) */
+    #welcomeOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: radial-gradient(circle at 50% 25%, #1545ad 0%, #0a2463 55%, #051133 100%);
+      transition: opacity 0.5s ease;
+      pointer-events: auto;
+    }
+
+    #welcomeOverlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Botones táctiles cómodos */
+    .touch-btn {
+      min-height: 48px;
+    }
+  </style>
+</head>
+<body class="overlay-active">
+
+  <!-- Partículas de Ki en el fondo -->
+  <div id="kiContainer" aria-hidden="true"></div>
+
+  <!-- ========================================================= -->
+  <!-- PANTALLA DE BIENVENIDA (PORTADA)                          -->
+  <!-- ========================================================= -->
+  <div id="welcomeOverlay" role="dialog" aria-modal="true" aria-label="Bienvenida a la invitación">
+    <div class="max-w-sm w-full bg-white/10 backdrop-blur-md border-2 border-amber-400/75 rounded-3xl p-7 text-center shadow-2xl">
+      <!-- Esfera de 4 estrellas -->
+      <div class="w-24 h-24 mx-auto mb-5 btn-pulse-gold rounded-full flex items-center justify-center">
+        <svg viewBox="0 0 100 100" class="w-24 h-24 drop-shadow-lg" aria-hidden="true">
+          <defs>
+            <radialGradient id="coverBallGrad" cx="35%" cy="30%" r="65%">
+              <stop offset="0%" stop-color="#fff5a8"/>
+              <stop offset="30%" stop-color="#ffb703"/>
+              <stop offset="75%" stop-color="#fb8500"/>
+              <stop offset="100%" stop-color="#c84b00"/>
+            </radialGradient>
+          </defs>
+          <circle cx="50" cy="50" r="46" fill="url(#coverBallGrad)" stroke="#ffd166" stroke-width="2.5"/>
+          <ellipse cx="34" cy="28" rx="14" ry="8" fill="white" opacity="0.45" transform="rotate(-25 34 28)"/>
+          <g fill="#d62828">
+            <polygon points="36,30 38,35 43,35 39,38 40,43 36,40 32,43 33,38 29,35 34,35"/>
+            <polygon points="64,30 66,35 71,35 67,38 68,43 64,40 60,43 61,38 57,35 62,35"/>
+            <polygon points="36,56 38,61 43,61 39,64 40,69 36,66 32,69 33,64 29,61 34,61"/>
+            <polygon points="64,56 66,61 71,61 67,64 68,69 64,66 60,69 61,64 57,61 62,61"/>
+          </g>
+        </svg>
+      </div>
+
+      <p id="splashSubtitle"
+      
+       class="text-white font-serif-elegant text-2xl sm:text-3xl font-bold mb-3 leading-snug">
+        Revelación de Genero
+      </h1>
+      <p class="text-blue-100 text-sm mb-6 leading-relaxed">
+        
+      </p>
+
+      <button
+        id="openInvitationBtn"
+        type="button"
+        class="touch-btn w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-white font-bold text-base shadow-lg hover:scale-105 active:scale-95 transition-transform cursor-pointer border-2 border-amber-200"
+      >
+         Abrir Invitación 
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- BOTÓN FLOTANTE DE MÚSICA (ESQUINA INFERIOR DERECHA)       -->
+  <!-- ========================================================= -->
+  <button
+    id="musicToggleBtn"
+    type="button"
+    title="Reproducir / Pausar música"
+    aria-label="Reproducir o pausar música"
+    class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white border-2 border-amber-200 shadow-xl hover:scale-105 active:scale-95 transition cursor-pointer"
+  >
+    <span class="flex items-end gap-0.5 h-4 w-4 justify-center" aria-hidden="true">
+      <span class="music-bar paused w-1 h-full bg-amber-100 rounded-full" style="animation-delay: 0s"></span>
+      <span class="music-bar paused w-1 h-full bg-white rounded-full" style="animation-delay: 0.25s"></span>
+      <span class="music-bar paused w-1 h-full bg-amber-100 rounded-full" style="animation-delay: 0.5s"></span>
+    </span>
+    <svg id="iconMusicOn" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/>
+    </svg>
+    <svg id="iconMusicOff" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+      <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+    </svg>
+  </button>
+
+  <!-- ========================================================= -->
+  <!-- CONTENEDOR PRINCIPAL DE LA INVITACIÓN                     -->
+  <!-- ========================================================= -->
+  <div class="relative z-10 w-full min-h-screen flex flex-col items-center justify-center py-10 sm:py-14 px-2 sm:px-6">
+    <main class="db-outer-frame p-3 sm:p-6">
+      <!-- Destellos decorativos en esquinas -->
+      <div class="absolute top-3 left-4 text-amber-300/75 text-base select-none pointer-events-none">✦</div>
+      <div class="absolute top-3 right-4 text-amber-300/75 text-base select-none pointer-events-none">✦</div>
+      <div class="absolute bottom-3 left-4 text-sky-300/65 text-sm select-none pointer-events-none">✦</div>
+      <div class="absolute bottom-3 right-4 text-sky-300/65 text-sm select-none pointer-events-none">✦</div>
+
+      <!-- ===================================================== -->
+      <!-- DRAGÓN SHENLONG EN EL CENTRO DEL ARCO SUPERIOR (PNG)  -->
+      <!-- ===================================================== -->
+      <div class="relative w-full pt-28 sm:pt-36">
+        <div
+          id="shenlongWrapper"
+          class="absolute top-0 left-1/2 w-[96%] max-w-[440px] z-0 pointer-events-none select-none animate-shenlong flex items-center justify-center"
+        >
+          <img
+            id="shenlongPngImg"
+            src="./Shen_Long_Artwork.png"
+            alt="Dragón Shenlong"
+            class="w-full max-h-[265px] sm:max-h-[300px] object-contain mx-auto"
+          />
+        </div>
+
+        <!-- =================================================== -->
+        <!-- TARJETA PRINCIPAL CON ARCO NARANJA SUPERIOR         -->
+        <!-- =================================================== -->
+        <section class="arch-card px-4 sm:px-7 pt-12 sm:pt-14 pb-7 text-center overflow-hidden">
+
+          <!-- Título principal y subtítulo -->
+          <p id="displayTituloPrincipal" class="uppercase tracking-[0.22em] text-xs sm:text-sm font-extrabold text-orange-500 mb-1">
+            Revelación de Género
+          </p>
+          <p id="displaySubtitulo" class="text-sm sm:text-base font-bold text-[#7c4d32]/90 mb-2">
+            ¿Niño o Niña?
+          </p>
+
+          <!-- Ositos intercambiables por PNG + texto caligráfico -->
+          <div class="relative flex items-center justify-between gap-2 my-3">
+            <!-- Osito Izquierdo -->
+            <div class="w-[31%] flex flex-col items-center animate-bear-left">
+              <div class="w-full max-w-[125px] aspect-square flex items-center justify-center">
+                <img
+                  id="imgOsitoIzq"
+                  src="Pan baby.png"
+                  alt="Osito Izquierdo"
+                  class="w-full h-full object-contain drop-shadow-md"
+                />
+              </div>
+            </div>
+
+            <!-- Texto Central -->
+            <div class="w-[38%] flex flex-col items-center justify-center leading-none z-10">
+              <h1 class="font-script title-script text-pink-500 drop-shadow-sm">¿Niña</h1>
+              <span class="font-script text-2xl sm:text-3xl text-amber-700/80 -my-1">o</span>
+              <h1 class="font-script title-script text-sky-500 drop-shadow-sm">Niño?</h1>
+            </div>
+
+            <!-- Osito Derecho -->
+            <div class="w-[31%] flex flex-col items-center animate-bear-right">
+              <div class="w-full max-w-[125px] aspect-square flex items-center justify-center">
+                <img
+                  id="imgOsitoDer"
+                  src="Goku bb.png"
+                  alt="Osito Derecho"
+                  class="w-full h-full object-contain drop-shadow-md"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Nombres de los padres (editable en CONFIG) + Oración principal -->
+          <div class="mt-3 mb-5 px-2 sm:px-5 text-center">
+            <h2
+              id="displayNombresPadres"
+              class="font-script text-4xl sm:text-5xl text-[#7c4d32] leading-tight mb-2"
+            >
+              Jenny y Marco
+            </h2>
+            <p class="text-base sm:text-lg font-bold text-[#6b4c3b] leading-relaxed max-w-[420px] mx-auto">
+              Están felices con mi llegada y te invitan a descubrir si soy
+              <span class="font-extrabold text-[#1e88e5]">Príncipe</span>
+              o
+              <span class="font-extrabold text-[#ec407a]">Princesa</span>.
+            </p>
+          </div>
+
+          <!-- Fecha destacada: Sábado 28 de Noviembre de 2026 -->
+          <div class="my-5">
+            <p id="displayMesAnio" class="font-serif-elegant text-sm sm:text-base font-bold tracking-[0.2em] text-pink-500 uppercase mb-1.5">
+              NOVIEMBRE 2026
+            </p>
+            <div class="flex items-center justify-center gap-3 sm:gap-5">
+              <div class="flex-1 border-y-2 border-pink-300/80 py-1.5">
+                <span id="displayDiaSemana" class="text-xs sm:text-sm font-extrabold tracking-widest text-sky-600 uppercase">SÁBADO</span>
+              </div>
+              <div class="px-2">
+                <span id="displayDiaNum" class="font-serif-elegant text-4xl sm:text-5xl font-bold text-[#7c4d32] leading-none">28</span>
+              </div>
+              <div class="flex-1 border-y-2 border-sky-300/80 py-1.5">
+                <span id="displayHoraTexto" class="text-xs sm:text-sm font-extrabold tracking-wider text-sky-600 uppercase">4:00 PM</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cuenta regresiva en 4 bloques responsivos -->
+          <div class="bg-gradient-to-r from-pink-50 via-amber-50/70 to-sky-50 border border-orange-200/80 rounded-2xl p-3 sm:p-4 my-4 shadow-inner">
+            <p class="text-[11px] sm:text-xs uppercase tracking-widest font-extrabold text-orange-600 mb-2.5">
+              Falta muy poco para descubrirlo
+            </p>
+            <div id="countdownGrid" class="grid grid-cols-4 gap-1.5 sm:gap-2.5">
+              <div class="bg-white rounded-xl py-2 px-1 shadow-sm border border-pink-100">
+                <div id="cdDays" class="text-lg sm:text-2xl font-extrabold text-[#7c4d32]">00</div>
+                <div class="text-[10px] sm:text-xs font-bold uppercase text-pink-500">Días</div>
+              </div>
+              <div class="bg-white rounded-xl py-2 px-1 shadow-sm border border-amber-100">
+                <div id="cdHours" class="text-lg sm:text-2xl font-extrabold text-[#7c4d32]">00</div>
+                <div class="text-[10px] sm:text-xs font-bold uppercase text-orange-500">Horas</div>
+              </div>
+              <div class="bg-white rounded-xl py-2 px-1 shadow-sm border border-sky-100">
+                <div id="cdMinutes" class="text-lg sm:text-2xl font-extrabold text-[#7c4d32]">00</div>
+                <div class="text-[10px] sm:text-xs font-bold uppercase text-sky-500">Min</div>
+              </div>
+              <div class="bg-white rounded-xl py-2 px-1 shadow-sm border border-sky-100">
+                <div id="cdSeconds" class="text-lg sm:text-2xl font-extrabold text-[#7c4d32]">00</div>
+                <div class="text-[10px] sm:text-xs font-bold uppercase text-sky-600">Seg</div>
+              </div>
+            </div>
+            <p id="countdownDoneMsg" class="hidden text-sm font-bold text-orange-600 py-2">
+               ¡Hoy es el gran día de la revelación! 
+            </p>
+          </div>
+
+          <!-- Sección de Ubicación -->
+          <div class="bg-white border border-orange-200 rounded-2xl p-4 my-4 shadow-sm">
+            <p class="text-[11px] sm:text-xs uppercase tracking-widest font-extrabold text-orange-500 mb-1">
+               Ubicación
+            </p>
+            <p id="displayLugarTexto" class="text-sm sm:text-base font-bold text-[#5c3d2e] mb-3.5">
+              
+            </p>
+            <a
+              id="btnUbicacion"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="touch-btn w-full py-3 px-5 rounded-full bg-gradient-to-r from-[#b57b5b] to-[#9c6244] hover:from-[#a56b4c] hover:to-[#8b5336] text-white font-bold text-sm sm:text-base shadow-md flex items-center justify-center gap-2 transition transform hover:scale-[1.02] active:scale-95"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              <span>Ver Ubicación</span>
+            </a>
+          </div>
+
+          <!-- Sección Limpia: Confirmar Asistencia por WhatsApp -->
+          <div class="my-5 px-1">
+            <a
+              id="btnWhatsapp"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="touch-btn w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:brightness-105 text-white font-bold text-sm sm:text-base shadow-lg flex items-center justify-center gap-2.5 transition transform hover:scale-[1.02] active:scale-95"
+            >
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.766.469 3.484 1.344 5l-1.406 5.156 5.281-1.375c1.469.797 3.125 1.219 4.75 1.219 5.516 0 9.969-4.453 9.969-9.969S17.547 2 12.031 2zm5.813 14.078c-.25.703-1.453 1.344-2 1.422-.516.078-1.172.109-1.891-.125-.438-.141-1-.328-1.719-.641-3.031-1.312-5-4.375-5.156-4.578-.156-.203-1.234-1.641-1.234-3.125s.781-2.219 1.062-2.516c.281-.297.609-.375.812-.375h.594c.188 0 .438-.078.688.516.25.609.859 2.094.938 2.25.078.156.125.344.016.547-.109.203-.156.344-.312.531-.156.188-.328.422-.469.562-.156.156-.328.328-.141.641.188.312.828 1.375 1.781 2.219 1.219 1.094 2.25 1.438 2.562 1.594.312.156.5.125.688-.078.188-.203.781-.922.984-1.234.203-.312.406-.266.688-.156.281.109 1.781.844 2.094 1 .312.156.516.234.594.359.078.125.078.734-.172 1.438z"/>
+              </svg>
+              <span>Confirmar Asistencia</span>
+            </a>
+          </div>
+
+          <!-- ================================================= -->
+          <!-- ESFERAS DEL DRAGÓN DEBAJO DE CONFIRMAR ASISTENCIA -->
+          <!-- (IMAGEN PNG CON RESPLANDOR ANARANJADO MÁGICO)     -->
+          <!-- ================================================= -->
+          <div class="mt-4 pt-1">
+            <p class="font-script text-3xl sm:text-4xl text-[#7c4d32] mb-2">¡Te Esperamos!</p>
+
+            <div class="relative flex items-center justify-center py-3 px-2">
+              <!-- Halo radial naranja suave detrás -->
+              <div class="dragon-balls-halo absolute inset-0 rounded-full pointer-events-none" aria-hidden="true"></div>
+
+              <!-- Contenedor con resplandor anaranjado pulsante -->
+              <div class="relative z-10 w-full flex items-center justify-center dragon-balls-glow">
+                <img
+                  id="dragonBallsPngImg"
+                  src="Dragon Ball.png"
+                  alt="Esferas del Dragón"
+                  class="w-full max-w-[340px] max-h-[125px] object-contain mx-auto"
+                />
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast discreto para avisos (sin alert) -->
+  <div id="toastBox" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full bg-slate-900/95 text-white text-xs sm:text-sm font-medium shadow-xl border border-amber-400/60 opacity-0 pointer-events-none transition-opacity duration-300 text-center max-w-[90vw]"></div>
+
+  <!-- Reproductor MP3 en Loop -->
+  <audio id="bgMusicPlayer" loop preload="auto"></audio>
+
+  <script>
+    // =========================================================================
+    // PARTÍCULAS DE KI EN EL FONDO
+    // =========================================================================
+    function createKiParticles() {
+      const container = document.getElementById('kiContainer');
+      if (!container) return;
+
+      container.innerHTML = '';
+      const colors = ['#ffd000', '#ff9e00', '#60a5fa', '#fef08a'];
+      const count = window.innerWidth < 640 ? 18 : 28;
+
+      for (let i = 0; i < count; i++) {
+        const dot = document.createElement('span');
+        const size = Math.random() * 6 + 3;
+        dot.className = 'ki-particle';
+        dot.style.width = size + 'px';
+        dot.style.height = size + 'px';
+        dot.style.left = Math.random() * 100 + '%';
+        dot.style.background = colors[i % colors.length];
+        dot.style.boxShadow = `0 0 ${size * 2.2}px ${colors[i % colors.length]}`;
+        dot.style.animationDuration = (Math.random() * 8 + 7) + 's';
+        dot.style.animationDelay = (Math.random() * 7) + 's';
+        container.appendChild(dot);
+      }
+    }
+
+    // =========================================================================
+    // CUENTA REGRESIVA EN VIVO
+    // =========================================================================
+    function updateCountdown() {
+      const targetTime = new Date(CONFIG.FECHA_ISO).getTime();
+      const diff = targetTime - Date.now();
+
+      const grid = document.getElementById('countdownGrid');
+      const doneMsg = document.getElementById('countdownDoneMsg');
+
+      if (isNaN(targetTime) || diff <= 0) {
+        if (grid) grid.classList.add('hidden');
+        if (doneMsg) doneMsg.classList.remove('hidden');
+        return;
+      }
+
+      if (grid) grid.classList.remove('hidden');
+      if (doneMsg) doneMsg.classList.add('hidden');
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('cdDays').textContent = String(days).padStart(2, '0');
+      document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cdMinutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('cdSeconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    // =========================================================================
+    // TOAST DISCRETO (SIN ALERT)
+    // =========================================================================
+    let toastTimer = null;
+    function showToast(message) {
+      const box = document.getElementById('toastBox');
+      if (!box) return;
+      box.textContent = message;
+      box.classList.remove('opacity-0');
+      box.classList.add('opacity-100');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        box.classList.remove('opacity-100');
+        box.classList.add('opacity-0');
+      }, 2800);
+    }
+
+    // =========================================================================
+    // CONTROL DE MÚSICA MP3 EN LOOP
+    // =========================================================================
+    const bgMusic = document.getElementById('bgMusicPlayer');
+    let isMusicPlaying = false;
+
+    function updateMusicUI(playing) {
+      isMusicPlaying = playing;
+      const iconOn = document.getElementById('iconMusicOn');
+      const iconOff = document.getElementById('iconMusicOff');
+      const bars = document.querySelectorAll('.music-bar');
+
+      if (iconOn && iconOff) {
+        iconOn.classList.toggle('hidden', !playing);
+        iconOff.classList.toggle('hidden', playing);
+      }
+
+      bars.forEach((bar) => {
+        bar.classList.toggle('paused', !playing);
+      });
+    }
+
+    function playBackgroundMusic(showHintIfEmpty = false) {
+      if (!CONFIG.AUDIO_MP3_URL || CONFIG.AUDIO_MP3_URL.trim() === '') {
+        updateMusicUI(false);
+        if (showHintIfEmpty) {
+          showToast('Agrega tu archivo MP3 en CONFIG.AUDIO_MP3_URL para activar la música.');
+        }
+        return;
+      }
+
+      try {
+        const audioUrl = encodeURI(CONFIG.AUDIO_MP3_URL.trim());
+        if (!bgMusic.src || bgMusic.getAttribute('data-src') !== audioUrl) {
+          bgMusic.src = audioUrl;
+          bgMusic.setAttribute('data-src', audioUrl);
+        }
+        bgMusic.loop = true;
+        const playPromise = bgMusic.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+          playPromise
+            .then(() => updateMusicUI(true))
+            .catch(() => {
+              updateMusicUI(false);
+              if (showHintIfEmpty) {
+                showToast('No se pudo reproducir "' + CONFIG.AUDIO_MP3_URL + '". Verifica que termine en .mp3 y esté en la misma carpeta.');
+              }
+            });
+        } else {
+          updateMusicUI(true);
+        }
+      } catch (err) {
+        updateMusicUI(false);
+      }
+    }
+
+    function toggleMusic() {
+      if (isMusicPlaying) {
+        try {
+          bgMusic.pause();
+        } catch (err) {
+          // Ignorar error de pausa
+        }
+        updateMusicUI(false);
+      } else {
+        playBackgroundMusic(true);
+      }
+    }
+
+    // =========================================================================
+    // APLICAR CONFIGURACIÓN A LA INTERFAZ
+    // =========================================================================
+    function applyConfigToUI() {
+      // Textos editables
+      document.getElementById('splashSubtitle').textContent = CONFIG.TITULO_PRINCIPAL;
+      document.getElementById('displayTituloPrincipal').textContent = CONFIG.TITULO_PRINCIPAL;
+      document.getElementById('displaySubtitulo').textContent = CONFIG.SUBTITULO;
+      document.getElementById('displayMesAnio').textContent = CONFIG.MES_ANIO;
+      document.getElementById('displayDiaSemana').textContent = CONFIG.DIA_SEMANA;
+      document.getElementById('displayDiaNum').textContent = CONFIG.DIA_NUM;
+      document.getElementById('displayHoraTexto').textContent = CONFIG.HORA_TEXTO;
+      document.getElementById('displayLugarTexto').textContent = CONFIG.LUGAR_TEXTO;
+
+      // Nombres de los padres (se oculta automáticamente si está vacío)
+      const nombresEl = document.getElementById('displayNombresPadres');
+      if (CONFIG.NOMBRES_PADRES && CONFIG.NOMBRES_PADRES.trim() !== '') {
+        nombresEl.textContent = CONFIG.NOMBRES_PADRES;
+        nombresEl.classList.remove('hidden');
+      } else {
+        nombresEl.classList.add('hidden');
+      }
+
+      // Función auxiliar para cargar cada PNG y avisar si no existe el archivo
+      function loadCustomPng(imgId, pathValue, labelText, width, height) {
+        const imgEl = document.getElementById(imgId);
+        if (!imgEl) return;
+        const cleanPath = (pathValue || '').trim();
+        const fallbackUrl = `https://placehold.co/${width}x${height}/ff6b00/ffffff?text=${encodeURIComponent('Falta: ' + (cleanPath || labelText))}`;
+
+        imgEl.onerror = () => {
+          imgEl.onerror = null;
+          imgEl.src = fallbackUrl;
+        };
+
+        imgEl.src = cleanPath ? encodeURI(cleanPath) : fallbackUrl;
+      }
+
+      // Cargar las 4 imágenes PNG desde CONFIG
+      loadCustomPng('shenlongPngImg', CONFIG.SHENLONG_PNG, 'shenlong.png', 360, 200);
+      loadCustomPng('imgOsitoIzq', CONFIG.OSITO_IZQ_PNG, 'osito_izq.png', 200, 200);
+      loadCustomPng('imgOsitoDer', CONFIG.OSITO_DER_PNG, 'osito_der.png', 200, 200);
+      loadCustomPng('dragonBallsPngImg', CONFIG.ESFERAS_PNG, 'esferas.png', 340, 110);
+
+      // Enlace de ubicación
+      const btnUbicacion = document.getElementById('btnUbicacion');
+      if (CONFIG.URL_UBICACION && CONFIG.URL_UBICACION.trim() !== '') {
+        btnUbicacion.href = CONFIG.URL_UBICACION;
+      } else {
+        btnUbicacion.href = '#';
+        btnUbicacion.addEventListener('click', (e) => {
+          e.preventDefault();
+          showToast('Agrega tu enlace de Google Maps en CONFIG.URL_UBICACION.');
+        });
+      }
+
+      // Enlace de WhatsApp
+      const btnWhatsapp = document.getElementById('btnWhatsapp');
+      const cleanPhone = String(CONFIG.WHATSAPP_NUMERO || '').replace(/\D/g, '');
+      const encodedMsg = encodeURIComponent(CONFIG.WHATSAPP_MENSAJE || '');
+      btnWhatsapp.href = cleanPhone
+        ? `https://wa.me/${cleanPhone}?text=${encodedMsg}`
+        : `https://wa.me/?text=${encodedMsg}`;
+
+      // Preparar reproductor MP3 si existe URL
+      if (CONFIG.AUDIO_MP3_URL && CONFIG.AUDIO_MP3_URL.trim() !== '') {
+        const audioUrl = encodeURI(CONFIG.AUDIO_MP3_URL.trim());
+        bgMusic.src = audioUrl;
+        bgMusic.setAttribute('data-src', audioUrl);
+      }
+    }
+
+    // =========================================================================
+    // ABRIR INVITACIÓN (PORTADA)
+    // =========================================================================
+    function openInvitation() {
+      const overlay = document.getElementById('welcomeOverlay');
+      document.body.classList.remove('overlay-active');
+
+      if (overlay) {
+        overlay.classList.add('fade-out');
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 520);
+      }
+
+      playBackgroundMusic(false);
+    }
+
+    // =========================================================================
+    // INICIALIZACIÓN
+    // =========================================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      createKiParticles();
+      applyConfigToUI();
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
+      const openBtn = document.getElementById('openInvitationBtn');
+      if (openBtn) {
+        openBtn.addEventListener('click', openInvitation);
+      }
+
+      const musicBtn = document.getElementById('musicToggleBtn');
+      if (musicBtn) {
+        musicBtn.addEventListener('click', toggleMusic);
+      }
+    });
+  </script>
+</body>
+</html>
